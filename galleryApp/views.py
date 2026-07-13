@@ -4,7 +4,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm
 from .models import Photo, Tag, PhotoInteraction, Profile
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm, ProfileUpdateForm
+from .forms import UserRegisterForm , ProfileUpdateForm
 
 # Create your views here.
 
