@@ -1,18 +1,21 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib.auth import login
 from django.contrib import messages
 from .forms import UserRegisterForm
-from .models import Photo, Tag, PhotoInteraction, Profile
+from .models import *
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm , ProfileUpdateForm
+from .forms import *
 
 # Create your views here.
+def home(request):
+    return render(request, 'gallery/home.html')
 
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
+            Profile.objects.create(user=user)
             login(request, user)
             messages.success(request, "Account created successfully.")
             return redirect('home')
