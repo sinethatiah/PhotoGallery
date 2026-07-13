@@ -17,3 +17,12 @@ class Tag(models.Model):
         return self.name
 
 
+class Photo(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='photos/')
+    tags = models.ManyToManyField(Tag, related_name='photos', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+ 
+    def __str__(self):
+        return self.title
