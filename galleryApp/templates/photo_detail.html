@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ photo.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <a href="{% url 'home' %}" class="btn btn-link ps-0 mb-2">&larr; Back to gallery</a>
+
+        <img src="{{ photo.image.url }}" class="img-fluid rounded mb-3" alt="{{ photo.title }}">
+
+        <h2>{{ photo.title }}</h2>
+        <p class="text-muted">{{ photo.description }}</p>
+
+        <div class="mb-3">
+            {% for tag in photo.tags.all %}
+                <span class="badge bg-secondary">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+            <form method="post" action="{% url 'toggle_interaction' photo.pk 'like' %}">
+                {% csrf_token %}
+                <button type="submit"
+                        class="btn {% if user_interaction.interaction_type == 'like' %}btn-success{% else %}btn-outline-success{% endif %}">
+                    <i class="bi bi-hand-thumbs-up"></i> Like ({{ like_count }})
+                </button>
+            </form>
+
+            <form method="post" action="{% url 'toggle_interaction' photo.pk 'dislike' %}">
+                {% csrf_token %}
+                <button type="submit"
+                        class="btn {% if user_interaction.interaction_type == 'dislike' %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                    <i class="bi bi-hand-thumbs-down"></i> Dislike ({{ dislike_count }})
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
