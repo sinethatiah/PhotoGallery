@@ -28,7 +28,7 @@ def profile(request):
 def home(request):
     tag = request.GET.get('tag')
     photos = Photo.objects.filter(tags__name=tag) if tag else Photo.objects.all()
-    return render(request, 'gallery/home.html', {
+    return render(request, 'home.html', {
         'photos': photos,
         'tags': Tag.objects.all(),
         'selected_tag': tag,
@@ -38,7 +38,7 @@ def home(request):
 @login_required
 def photo_detail(request, pk):
     photo = get_object_or_404(Photo, pk=pk)
-    return render(request, 'gallery/photo_detail.html', {
+    return render(request, 'photo_detail.html', {
         'photo': photo,
         'like_count': photo.interactions.filter(interaction_type='like').count(),
         'dislike_count': photo.interactions.filter(interaction_type='dislike').count(),

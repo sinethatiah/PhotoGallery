@@ -1,4 +1,44 @@
 {% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+ 
 {% block content %}
-<h2>Welcome to the gallery</h2>
+<h2 class="mb-4">Photo Gallery</h2>
+ 
+
+<div class="mb-4">
+    <a href="{% url 'home' %}"
+       class="btn btn-sm {% if not selected_tag %}btn-primary{% else %}btn-outline-primary{% endif %} me-1 mb-1">
+        All
+    </a>
+    {% for tag in tags %}
+        <a href="{% url 'home' %}?tag={{ tag.name }}"
+           class="btn btn-sm {% if selected_tag == tag.name %}btn-primary{% else %}btn-outline-primary{% endif %} me-1 mb-1">
+            {{ tag.name }}
+        </a>
+    {% endfor %}
+</div>
+ 
+
+<div class="row g-4">
+    {% for photo in photos %}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <a href="{% url 'photo_detail' photo.pk %}">
+                    <img src="{{ photo.image.url }}" class="card-img-top" alt="{{ photo.title }}"
+                         style="height: 200px; object-fit: cover;">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ photo.title }}</h5>
+                    <div>
+                        {% for tag in photo.tags.all %}
+                            <span class="badge bg-secondary">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted">No photos found.</p>
+    {% endfor %}
+</div>
 {% endblock %}
